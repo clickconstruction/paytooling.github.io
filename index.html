@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayTooling - Contractor Pay Stub Generator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-car"></i> PayTooling</h1>
+            <p>Contractor Pay Stub Generator</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <form id="paystubForm">
+                <h2>Contractor Information</h2>
+                
+                <div class="form-group">
+                    <label for="contractorName">Contractor Name:</label>
+                    <input type="text" id="contractorName" name="contractorName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentAmount">Payment Amount ($):</label>
+                    <input type="number" id="paymentAmount" name="paymentAmount" step="0.01" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="milesDriven">Miles Driven During This Period For Company:</label>
+                    <input type="number" id="milesDriven" name="milesDriven" min="0" step="0.1">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payPeriodStart">Pay Period Start:</label>
+                        <input type="date" id="payPeriodStart" name="payPeriodStart" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payPeriodEnd">Pay Period End:</label>
+                        <input type="date" id="payPeriodEnd" name="payPeriodEnd" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentDate">Payment Date:</label>
+                    <input type="date" id="paymentDate" name="paymentDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mileageRate"><a href="https://www.irs.gov/tax-professionals/standard-mileage-rates" target="_blank" title="View current IRS mileage rates">IRS standard mileage rate this year for business use:</a></label>
+                    <input type="number" id="mileageRate" name="mileageRate" min="0" step="0.001" value="0.70">
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" name="notes" rows="3"></textarea>
+                </div>
+                
+                <h2>Company Information</h2>
+                
+                <div class="form-group">
+                    <label for="companyName">Company Name:</label>
+                    <input type="text" id="companyName" name="companyName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyAddress">Company Address:</label>
+                    <textarea id="companyAddress" name="companyAddress" rows="2" required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="generatePDF" class="btn primary">Generate Pay Stub</button>
+                    <button type="button" id="generateLink" class="btn secondary">Generate Pre-fill Link</button>
+                    <button type="reset" class="btn">Reset Form</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="card" id="linkSection" style="display: none;">
+            <h2>Pre-fill Link</h2>
+            <p>Use this link to pre-fill the form with the current information:</p>
+            <div class="link-container">
+                <input type="text" id="prefillLink" readonly>
+                <button id="copyLink" class="btn"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> <span class="company-name">ClickConstruction</span>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
