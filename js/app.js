@@ -72,8 +72,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Set default company information
-    document.getElementById('companyName').value = 'Click Plumbing and Electrical';
-    document.getElementById('companyAddress').value = '5501 Balcones Dr A141\nAustin, TX 78731';
+    const companyNameInput = document.getElementById('companyName');
+    const companyAddressInput = document.getElementById('companyAddress');
+    
+    if (companyNameInput) {
+        companyNameInput.value = 'Click Plumbing and Electrical';
+    }
+    
+    if (companyAddressInput) {
+        companyAddressInput.value = '5501 Balcones Dr A141\nAustin, TX 78731';
+    }
     
     // Prevent scroll wheel from changing number input values
     const numberInputs = document.querySelectorAll('input[type="number"]');
@@ -92,9 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Update payment date when pay period end date changes
-    payPeriodEndInput.addEventListener('change', function() {
-        paymentDateInput.valueAsDate = new Date(this.value);
-    });
+    if (payPeriodEndInput && paymentDateInput) {
+        payPeriodEndInput.addEventListener('change', function() {
+            paymentDateInput.valueAsDate = new Date(this.value);
+        });
+    }
     
     // Check for URL parameters to pre-fill form
     window.addEventListener('load', function() {
@@ -119,75 +129,108 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Generate PDF when button is clicked
-    generatePDFBtn.addEventListener('click', function() {
-        if (!validateForm()) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        
-        generatePayStubPDF();
-    });
+    if (generatePDFBtn) {
+        generatePDFBtn.addEventListener('click', function() {
+            if (!validateForm()) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            generatePayStubPDF();
+        });
+    }
     
     // Generate pre-fill link when button is clicked
-    generateLinkBtn.addEventListener('click', function() {
-        if (!validateForm()) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        
-        const prefillLink = generatePrefillLink();
-        prefillLinkInput.value = prefillLink;
-        linkSection.style.display = 'block';
-        prefillLinkInput.select();
-        
-        // Scroll to link section
-        linkSection.scrollIntoView({ behavior: 'smooth' });
-    });
+    if (generateLinkBtn) {
+        generateLinkBtn.addEventListener('click', function() {
+            if (!validateForm()) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            const prefillLink = generatePrefillLink();
+            if (prefillLinkInput && linkSection) {
+                prefillLinkInput.value = prefillLink;
+                linkSection.style.display = 'block';
+                prefillLinkInput.select();
+                
+                // Scroll to link section
+                linkSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
     
     // Fill form with sample data when button is clicked
-    fillSampleDataBtn.addEventListener('click', function() {
-        // Set sample data values
-        document.getElementById('contractorName').value = 'Trace Whites';
-        document.getElementById('paymentAmount').value = '1500';
-        document.getElementById('milesDriven').value = '1234';
+    if (fillSampleDataBtn) {
+        fillSampleDataBtn.addEventListener('click', function() {
+            // Set sample data values
+            const contractorNameInput = document.getElementById('contractorName');
+            const paymentAmountInput = document.getElementById('paymentAmount');
+            const milesDrivenInput = document.getElementById('milesDriven');
+            const payPeriodStartInput = document.getElementById('payPeriodStart');
+            const payPeriodEndInput = document.getElementById('payPeriodEnd');
+            const paymentDateInput = document.getElementById('paymentDate');
+            const companyNameInput = document.getElementById('companyName');
+            const companyAddressInput = document.getElementById('companyAddress');
+            const notesInput = document.getElementById('notes');
+            
+            if (contractorNameInput) contractorNameInput.value = 'Trace Whites';
+            if (paymentAmountInput) paymentAmountInput.value = '1500';
+            if (milesDrivenInput) milesDrivenInput.value = '1234';
         
-        // Set current dates for the sample data
-        const today = new Date();
-        
-        // Set pay period start to 2 weeks ago
-        const payPeriodStart = new Date(today);
-        payPeriodStart.setDate(today.getDate() - 14);
-        document.getElementById('payPeriodStart').value = payPeriodStart.toISOString().split('T')[0];
-        
-        // Set pay period end to yesterday
-        const payPeriodEnd = new Date(today);
-        payPeriodEnd.setDate(today.getDate() - 1);
-        document.getElementById('payPeriodEnd').value = payPeriodEnd.toISOString().split('T')[0];
-        
-        // Set payment date to today
-        document.getElementById('paymentDate').value = today.toISOString().split('T')[0];
-        
-        // Set company information
-        document.getElementById('companyName').value = 'ABC Construction, Inc.';
-        document.getElementById('companyAddress').value = '123 Builder Way\nConstruction City, TX 75001';
-        
-        // Add a sample note
-        document.getElementById('notes').value = 'Payment for project completion and travel expenses.';
-    });
+            // Set current dates for the sample data
+            const today = new Date();
+            
+            // Set pay period start to 2 weeks ago
+            if (payPeriodStartInput) {
+                const payPeriodStart = new Date(today);
+                payPeriodStart.setDate(today.getDate() - 14);
+                payPeriodStartInput.value = payPeriodStart.toISOString().split('T')[0];
+            }
+            
+            // Set pay period end to yesterday
+            if (payPeriodEndInput) {
+                const payPeriodEnd = new Date(today);
+                payPeriodEnd.setDate(today.getDate() - 1);
+                payPeriodEndInput.value = payPeriodEnd.toISOString().split('T')[0];
+            }
+            
+            // Set payment date to today
+            if (paymentDateInput) {
+                paymentDateInput.value = today.toISOString().split('T')[0];
+            }
+            
+            // Set company information
+            if (companyNameInput) {
+                companyNameInput.value = 'ABC Construction, Inc.';
+            }
+            
+            if (companyAddressInput) {
+                companyAddressInput.value = '123 Builder Way\nConstruction City, TX 75001';
+            }
+            
+            // Add a sample note
+            if (notesInput) {
+                notesInput.value = 'Payment for project completion and travel expenses.';
+            }
+        });
+    }
     
     // Copy link to clipboard
-    copyLinkBtn.addEventListener('click', function() {
-        prefillLinkInput.select();
-        document.execCommand('copy');
-        
-        // Change button text temporarily
-        const originalText = copyLinkBtn.innerHTML;
-        copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        
-        setTimeout(function() {
-            copyLinkBtn.innerHTML = originalText;
-        }, 2000);
-    });
+    if (copyLinkBtn && prefillLinkInput) {
+        copyLinkBtn.addEventListener('click', function() {
+            prefillLinkInput.select();
+            document.execCommand('copy');
+            
+            // Change button text temporarily
+            const originalText = copyLinkBtn.innerHTML;
+            copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            
+            setTimeout(function() {
+                copyLinkBtn.innerHTML = originalText;
+            }, 2000);
+        });
+    }
     
     // Validate form
     function validateForm() {
