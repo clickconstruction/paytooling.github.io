@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Invoice Generator - PayTooling</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/invoice-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1><i class="fas fa-car"></i> PayTooling</h1>
+                    <div class="title-and-toggle">
+                        <p>Contractor Payment Tools</p>
+                        <div class="theme-toggle">
+                            <span id="darkModeToggle" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li class="indent-1"><a href="index.html">Pay Stub Generator</a></li>
+                        <li class="indent-2"><a href="reverse-invoice.html" class="active">Reverse Invoice</a></li>
+                        <li class="indent-3"><a href="how-to-use.html">How to Use</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <form id="invoiceForm">
+                <div class="header-with-action">
+                    <h2>Contractor Invoice Generator</h2>
+                    <button type="button" id="fillSampleData" class="btn">Fill with Sample Data</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="invoiceNumber">Invoice Number:</label>
+                    <input type="text" id="invoiceNumber" name="invoiceNumber" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="invoiceDate">Invoice Date:</label>
+                        <input type="date" id="invoiceDate" name="invoiceDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dueDate">Due Date:</label>
+                        <input type="date" id="dueDate" name="dueDate" required>
+                    </div>
+                </div>
+                
+                <h3>Contractor Information</h3>
+                
+                <div class="form-group">
+                    <label for="contractorName">Contractor Name:</label>
+                    <input type="text" id="contractorName" name="contractorName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contractorAddress">Contractor Address:</label>
+                    <textarea id="contractorAddress" name="contractorAddress" rows="2" required></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contractorPhone">Phone Number:</label>
+                        <input type="tel" id="contractorPhone" name="contractorPhone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contractorEmail">Email:</label>
+                        <input type="email" id="contractorEmail" name="contractorEmail">
+                    </div>
+                </div>
+                
+                <h3>Client Information</h3>
+                
+                <div class="form-group">
+                    <label for="companyName">Company Name:</label>
+                    <input type="text" id="companyName" name="companyName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyAddress">Company Address:</label>
+                    <textarea id="companyAddress" name="companyAddress" rows="2" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactPerson">Contact Person:</label>
+                    <input type="text" id="contactPerson" name="contactPerson">
+                </div>
+                
+                <h3>Invoice Items</h3>
+                
+                <div id="invoiceItems">
+                    <div class="invoice-item" id="invoiceItem1">
+                        <div class="form-row">
+                            <div class="form-group item-description">
+                                <label for="itemDescription1">Description:</label>
+                                <input type="text" id="itemDescription1" name="itemDescription1" required>
+                            </div>
+                            
+                            <div class="form-group item-quantity">
+                                <label for="itemQuantity1">Quantity:</label>
+                                <input type="number" id="itemQuantity1" name="itemQuantity1" min="0" step="0.01" required onchange="calculateItemAmount(1)" onkeyup="calculateItemAmount(1)">
+                            </div>
+                            
+                            <div class="form-group item-rate">
+                                <label for="itemRate1">Rate ($):</label>
+                                <input type="number" id="itemRate1" name="itemRate1" min="0" step="0.01" required onchange="calculateItemAmount(1)" onkeyup="calculateItemAmount(1)">
+                            </div>
+                            
+                            <div class="form-group item-amount">
+                                <label for="itemAmount1">Amount ($):</label>
+                                <input type="number" id="itemAmount1" name="itemAmount1" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions invoice-actions">
+                    <button type="button" id="addItem" class="btn">+ Add Item</button>
+                    <button type="button" id="removeItem" class="btn">- Remove Item</button>
+                </div>
+                
+                <div class="form-row totals-row">
+                    <div class="form-group">
+                        <label for="invoiceTotal">Invoice Total:</label>
+                        <input type="number" id="invoiceTotal" name="invoiceTotal" readonly>
+                    </div>
+                    
+                    <!-- Hidden fields for calculations -->
+                    <input type="hidden" id="subtotal" name="subtotal">
+                    <input type="hidden" id="mileageTotal" name="mileageTotal">
+                </div>
+                
+                <h3>Mileage</h3>
+                
+                <div class="form-group">
+                    <label for="milesDriven">Miles Driven:</label>
+                    <input type="number" id="milesDriven" name="milesDriven" min="0" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mileageRate"><a href="https://www.irs.gov/tax-professionals/standard-mileage-rates" target="_blank" title="View current IRS mileage rates">IRS standard mileage rate this year for business use:</a></label>
+                    <input type="number" id="mileageRate" name="mileageRate" min="0" step="0.001" value="0.70">
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="includeMileageInTotal" name="includeMileageInTotal" checked>
+                        Include mileage in total
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentTerms">Payment Terms:</label>
+                    <textarea id="paymentTerms" name="paymentTerms" rows="2">Payment due within 30 days of invoice date. Please make checks payable to the contractor name above.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" name="notes" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="addNotarialLanguage" name="addNotarialLanguage">
+                        Add notarial language
+                    </label>
+                </div>
+                
+                <!-- Digital Signature section removed -->
+                
+                <div class="form-actions">
+                    <button type="button" id="previewInvoice" class="btn primary">Preview Invoice</button>
+                    <button type="button" id="generatePDF" class="btn primary" style="display: none;">Generate PDF</button>
+                    <button type="button" id="generateLink" class="btn secondary">Generate Pre-fill Link</button>
+                    <button type="reset" class="btn">Reset Form</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="card" id="invoicePreviewSection" style="display: none;">
+            <div class="preview-header">
+                <h2>Invoice Preview</h2>
+                <div class="preview-actions">
+                    <button type="button" id="editInvoice" class="btn secondary">Edit Invoice</button>
+                    <button type="button" id="generatePDFFromPreview" class="btn primary">Generate PDF</button>
+                </div>
+            </div>
+            <div id="invoicePreview" class="invoice-preview"></div>
+        </div>
+        
+        <div class="card" id="linkSection" style="display: none;">
+            <h2>Pre-fill Link</h2>
+            <p>Use this link to pre-fill the form with the current information:</p>
+            <div class="link-container">
+                <input type="text" id="prefillLink" readonly>
+                <button id="copyLink" class="btn"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> <span class="company-name">ClickConstruction</span>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
+    <script src="js/invoice.js"></script>
+    <script src="js/app.js?v=1.0.1"></script>
+</body>
+</html>

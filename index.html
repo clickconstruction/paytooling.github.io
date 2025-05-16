@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PayTooling - Contractor Pay Stub Generator</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
@@ -12,15 +13,36 @@
 <body>
     <header>
         <div class="container">
-            <h1><i class="fas fa-car"></i> PayTooling</h1>
-            <p>Contractor Pay Stub Generator</p>
+            <div class="header-content">
+                <div class="header-title">
+                    <h1><i class="fas fa-car"></i> PayTooling</h1>
+                    <div class="title-and-toggle">
+                        <p>Contractor Payment Tools</p>
+                        <div class="theme-toggle">
+                            <span id="darkModeToggle" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li class="indent-1"><a href="index.html" class="active">Pay Stub Generator</a></li>
+                        <li class="indent-2"><a href="reverse-invoice.html">Reverse Invoice</a></li>
+                        <li class="indent-3"><a href="how-to-use.html">How to Use</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
 
     <main class="container">
         <div class="card">
             <form id="paystubForm">
-                <h2>Contractor Information</h2>
+                <div class="header-with-action">
+                    <h2>Contractor Information</h2>
+                    <button type="button" id="fillSampleData" class="btn">Fill with Sample Data</button>
+                </div>
                 
                 <div class="form-group">
                     <label for="contractorName">Contractor Name:</label>
@@ -103,6 +125,6 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=1.0.1"></script>
 </body>
 </html>

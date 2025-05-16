@@ -1,0 +1,92 @@
+/* Invoice-specific styles */
+
+/* Invoice items */
+.invoice-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.invoice-item:last-child {
+    border-bottom: none;
+}
+
+.item-description {
+    flex: 3;
+}
+
+.item-quantity,
+.item-rate,
+.item-amount {
+    flex: 1;
+}
+
+.invoice-actions {
+    margin-bottom: 1.5rem;
+}
+
+/* Totals row */
+.totals-row {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Signature canvas */
+.signature-section {
+    margin-top: 2rem;
+}
+
+.signature-canvas {
+    width: 100%;
+    height: 150px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* How to use page */
+.section {
+    margin-bottom: 2rem;
+}
+
+.section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.instructions {
+    padding-left: 1.5rem;
+}
+
+.instructions li {
+    margin-bottom: 1rem;
+}
+
+.instructions li strong {
+    color: var(--primary-dark);
+}
+
+.faq .question {
+    margin-bottom: 1.5rem;
+}
+
+.faq h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Dark mode styles */
+body.dark-mode .signature-canvas {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--input-border-color);
+}
+
+body.dark-mode .instructions li strong,
+body.dark-mode .faq h4 {
+    color: #a9cce3;
+}

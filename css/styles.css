@@ -10,6 +10,18 @@
     --border-radius: 0.25rem;
     --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     --transition: all 0.3s ease;
+    
+    /* Background and text colors */
+    --bg-color: #f5f7fa;
+    --card-bg-color: white;
+    --text-color: var(--dark-color);
+    --header-bg-color: var(--primary-color);
+    --header-text-color: white;
+    --footer-bg-color: var(--dark-color);
+    --footer-text-color: white;
+    --input-bg-color: white;
+    --input-text-color: var(--dark-color);
+    --input-border-color: var(--border-color);
 }
 
 * {
@@ -21,8 +33,9 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--dark-color);
-    background-color: #f5f7fa;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -33,11 +46,101 @@ body {
 }
 
 header {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--header-bg-color);
+    color: var(--header-text-color);
     padding: 2rem 0;
     margin-bottom: 2rem;
     box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.title-and-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+/* Indentation for navigation items */
+.main-nav .indent-1 {
+    margin-left: 0;
+}
+
+.main-nav .indent-2 {
+    margin-left: 1.5rem;
+}
+
+.main-nav .indent-3 {
+    margin-left: 3rem;
+}
+
+.main-nav a {
+    color: var(--header-text-color);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    position: relative;
+    transition: var(--transition);
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--header-text-color);
+    transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+    width: 100%;
+}
+
+.theme-toggle {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#darkModeToggle {
+    color: var(--header-text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#darkModeToggle:hover {
+    transform: scale(1.2);
 }
 
 header h1 {
@@ -45,11 +148,12 @@ header h1 {
 }
 
 footer {
-    background-color: var(--dark-color);
-    color: white;
+    background-color: var(--footer-bg-color);
+    color: var(--footer-text-color);
     padding: 1.5rem 0;
     margin-top: 2rem;
     text-align: center;
+    transition: background-color 0.3s ease;
 }
 
 .company-name {
@@ -58,16 +162,29 @@ footer {
 }
 
 .card {
-    background-color: white;
+    background-color: var(--card-bg-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 2rem;
     margin-bottom: 2rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Form Styles */
+/* Form styles */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Header with action button */
+.header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.header-with-action h2 {
+    margin: 0;
 }
 
 .form-row {
@@ -81,6 +198,21 @@ footer {
     margin-bottom: 0;
 }
 
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.checkbox-group label {
+    display: inline;
+    font-weight: normal;
+}
+
 label {
     display: block;
     margin-bottom: 0.5rem;
@@ -90,11 +222,13 @@ label {
 input, textarea, select {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--input-border-color);
     border-radius: var(--border-radius);
     font-family: inherit;
     font-size: 1rem;
-    transition: var(--transition);
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+    transition: var(--transition), background-color 0.3s ease, color 0.3s ease;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -191,8 +325,195 @@ h2 {
     background-color: #f8f9fa;
 }
 
+/* Invoice Preview Styles */
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.preview-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.invoice-preview {
+    background-color: white;
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
+    font-family: 'Arial', sans-serif;
+}
+
+.invoice-preview h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.invoice-preview .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.invoice-preview .invoice-details,
+.invoice-preview .invoice-parties {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.invoice-preview .invoice-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.invoice-preview .invoice-items th {
+    background-color: var(--light-color);
+    text-align: left;
+    padding: 0.5rem;
+}
+
+.invoice-preview .invoice-items td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.invoice-preview .invoice-items tr.non-billable td {
+    color: var(--secondary-color);
+    font-style: italic;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.invoice-preview .invoice-totals {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.invoice-preview .invoice-footer {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.invoice-preview .invoice-section + .invoice-section {
+    margin-top: 0.5rem;
+}
+
+/* Dark Mode Styles */
+/* Dark Mode Styles - Important: these must be applied directly, not just as variables */
+body.dark-mode {
+    --bg-color: #1a1a1a;
+    --card-bg-color: #2d2d2d;
+    --text-color: #f0f0f0;
+    --header-bg-color: #2c3e50;
+    --header-text-color: #f0f0f0;
+    --footer-bg-color: #1e272e;
+    --footer-text-color: #f0f0f0;
+    --input-bg-color: #3d3d3d;
+    --input-text-color: #f0f0f0;
+    --input-border-color: #555;
+    --border-color: #555;
+    
+    /* Direct application of colors */
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+}
+
+/* Direct styling for specific elements in dark mode */
+body.dark-mode .card {
+    background-color: #2d2d2d;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode header {
+    background-color: #2c3e50;
+}
+
+body.dark-mode footer {
+    background-color: #1e272e;
+}
+
+body.dark-mode input, 
+body.dark-mode textarea, 
+body.dark-mode select {
+    background-color: #3d3d3d;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+body.dark-mode h2 {
+    color: #a9cce3; /* Lighter blue for headings in dark mode */
+    border-bottom-color: #555;
+}
+
+body.dark-mode .btn:not(.primary):not(.secondary) {
+    background-color: #3d3d3d;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+body.dark-mode .btn:not(.primary):not(.secondary):hover {
+    background-color: #4d4d4d;
+}
+
+body.dark-mode #darkModeToggle i {
+    content: "\f185";
+    color: #f0f0f0;
+}
+
+body.dark-mode .link-container input {
+    background-color: #3d3d3d;
+    color: #f0f0f0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .header-title {
+        width: 100%;
+    }
+    
+    .title-and-toggle {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .main-nav {
+        width: 100%;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* Adjust indentation for mobile */
+    .main-nav .indent-1,
+    .main-nav .indent-2,
+    .main-nav .indent-3 {
+        margin-left: 0;
+        padding-left: 1rem;
+        border-left: 3px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .main-nav .indent-2 {
+        margin-left: 1rem;
+    }
+    
+    .main-nav .indent-3 {
+        margin-left: 2rem;
+    }
+    
     .form-row {
         flex-direction: column;
         gap: 0;

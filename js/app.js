@@ -2,12 +2,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     
+    // Simple dark mode toggle implementation
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const icon = darkModeToggle.querySelector('i');
+    
+    // Check for saved preference
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-mode');
+        icon.className = 'fas fa-sun';
+    }
+    
+    // Simple toggle function
+    darkModeToggle.onclick = function() {
+        if (body.classList.contains('dark-mode')) {
+            // Switch to light mode
+            body.classList.remove('dark-mode');
+            icon.className = 'fas fa-moon';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // Switch to dark mode
+            body.classList.add('dark-mode');
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('theme', 'dark');
+        }
+    };
+    
     // Get form elements
     const paystubForm = document.getElementById('paystubForm');
     const generatePDFBtn = document.getElementById('generatePDF');
     const generateLinkBtn = document.getElementById('generateLink');
-    const prefillLinkInput = document.getElementById('prefillLink');
+    const fillSampleDataBtn = document.getElementById('fillSampleData');
     const copyLinkBtn = document.getElementById('copyLink');
+    const prefillLinkInput = document.getElementById('prefillLink');
     const linkSection = document.getElementById('linkSection');
     
     // Since we know the current date is April 28, 2025 (a Monday), let's set it explicitly
@@ -28,15 +55,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Set pay period start to Monday of current week
     const payPeriodStartInput = document.getElementById('payPeriodStart');
-    payPeriodStartInput.valueAsDate = mondayOfWeek;
+    if (payPeriodStartInput) {
+        payPeriodStartInput.valueAsDate = mondayOfWeek;
+    }
     
     // Set pay period end to Friday of current week
     const payPeriodEndInput = document.getElementById('payPeriodEnd');
-    payPeriodEndInput.valueAsDate = fridayOfWeek;
+    if (payPeriodEndInput) {
+        payPeriodEndInput.valueAsDate = fridayOfWeek;
+    }
     
     // Set payment date to match pay period end date
     const paymentDateInput = document.getElementById('paymentDate');
-    paymentDateInput.valueAsDate = fridayOfWeek;
+    if (paymentDateInput) {
+        paymentDateInput.valueAsDate = fridayOfWeek;
+    }
     
     // Set default company information
     document.getElementById('companyName').value = 'Click Plumbing and Electrical';
@@ -102,12 +135,44 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const link = generatePrefillLink();
-        prefillLinkInput.value = link;
+        const prefillLink = generatePrefillLink();
+        prefillLinkInput.value = prefillLink;
         linkSection.style.display = 'block';
+        prefillLinkInput.select();
         
         // Scroll to link section
         linkSection.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Fill form with sample data when button is clicked
+    fillSampleDataBtn.addEventListener('click', function() {
+        // Set sample data values
+        document.getElementById('contractorName').value = 'Trace Whites';
+        document.getElementById('paymentAmount').value = '1500';
+        document.getElementById('milesDriven').value = '1234';
+        
+        // Set current dates for the sample data
+        const today = new Date();
+        
+        // Set pay period start to 2 weeks ago
+        const payPeriodStart = new Date(today);
+        payPeriodStart.setDate(today.getDate() - 14);
+        document.getElementById('payPeriodStart').value = payPeriodStart.toISOString().split('T')[0];
+        
+        // Set pay period end to yesterday
+        const payPeriodEnd = new Date(today);
+        payPeriodEnd.setDate(today.getDate() - 1);
+        document.getElementById('payPeriodEnd').value = payPeriodEnd.toISOString().split('T')[0];
+        
+        // Set payment date to today
+        document.getElementById('paymentDate').value = today.toISOString().split('T')[0];
+        
+        // Set company information
+        document.getElementById('companyName').value = 'ABC Construction, Inc.';
+        document.getElementById('companyAddress').value = '123 Builder Way\nConstruction City, TX 75001';
+        
+        // Add a sample note
+        document.getElementById('notes').value = 'Payment for project completion and travel expenses.';
     });
     
     // Copy link to clipboard

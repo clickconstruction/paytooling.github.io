@@ -1,0 +1,72 @@
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+}
+
+body.dark-mode .card {
+    background-color: #2d2d2d;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode header {
+    background-color: #2c3e50;
+}
+
+body.dark-mode footer {
+    background-color: #1e272e;
+}
+
+body.dark-mode input, 
+body.dark-mode textarea, 
+body.dark-mode select {
+    background-color: #3d3d3d;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+body.dark-mode h2 {
+    color: #a9cce3; /* Lighter blue for headings in dark mode */
+    border-bottom-color: #555;
+}
+
+body.dark-mode .btn:not(.primary):not(.secondary) {
+    background-color: #3d3d3d;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+body.dark-mode .btn:not(.primary):not(.secondary):hover {
+    background-color: #4d4d4d;
+}
+
+body.dark-mode .link-container input {
+    background-color: #3d3d3d;
+    color: #f0f0f0;
+}
+
+body.dark-mode #darkModeToggle i {
+    color: #ffcc00; /* Bright yellow for sun icon */
+}
+
+/* Improved navigation in dark mode */
+body.dark-mode .main-nav a {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .main-nav a:hover,
+body.dark-mode .main-nav a.active {
+    color: #7fdbff; /* Light blue for better contrast */
+}
+
+body.dark-mode .main-nav a::after {
+    background-color: #7fdbff;
+    height: 3px;
+    bottom: -3px;
+}
+
+body.dark-mode .company-name {
+    color: #FF9E40; /* Lighter orange in dark mode */
+}
