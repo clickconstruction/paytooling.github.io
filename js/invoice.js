@@ -183,13 +183,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const linkSection = document.getElementById('linkSection');
     
     // Set current date for invoice date
+    // A date input's value is a calendar day. valueAsDate / toISOString() are the UTC day, which
+    // is tomorrow every evening in the US — so build "YYYY-MM-DD" from the local date.
+    function toYmd(d) {
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
     const today = new Date();
-    document.getElementById('invoiceDate').valueAsDate = today;
+    document.getElementById('invoiceDate').value = toYmd(today);
     
     // Set due date (30 days from today)
     const dueDate = new Date(today);
     dueDate.setDate(today.getDate() + 30);
-    document.getElementById('dueDate').valueAsDate = dueDate;
+    document.getElementById('dueDate').value = toYmd(dueDate);
     
     // Generate invoice number (current date in YYYYMMDD format + random 3 digits)
     const randomDigits = Math.floor(Math.random() * 900) + 100; // Random 3-digit number
@@ -391,11 +396,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Set basic invoice information
             document.getElementById('invoiceNumber').value = 'INV-2025-001';
-            document.getElementById('invoiceDate').value = today.toISOString().split('T')[0];
-            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+            document.getElementById('invoiceDate').value = toYmd(today);
+            document.getElementById('dueDate').value = toYmd(dueDate);
             
             // Set contractor information
-            document.getElementById('contractorName').value = 'Trace Whites';
+            document.getElementById('contractorName').value = 'Sample Contractor';
             document.getElementById('contractorAddress').value = '456 Contractor Lane\nServiceville, TX 75002';
             document.getElementById('contractorPhone').value = '(555) 123-4567';
             document.getElementById('contractorEmail').value = 'trace@example.com';
