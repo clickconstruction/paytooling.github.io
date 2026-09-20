@@ -37,39 +37,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const prefillLinkInput = document.getElementById('prefillLink');
     const linkSection = document.getElementById('linkSection');
     
-    // Since we know the current date is April 28, 2025 (a Monday), let's set it explicitly
-    // This ensures we get the correct dates regardless of timezone issues
-    const today = new Date('2025-04-28T12:00:00');
-    console.log('Current date set to:', today.toLocaleDateString());
-    
-    // Since today is already Monday (April 28, 2025), set Monday to today
-    const mondayOfWeek = new Date(today);
-    mondayOfWeek.setHours(0, 0, 0, 0); // Reset time to start of day
-    console.log('Monday set to:', mondayOfWeek.toLocaleDateString());
-    
-    // Calculate Friday (April 28 + 4 days = May 2, 2025)
-    const fridayOfWeek = new Date(mondayOfWeek);
-    fridayOfWeek.setDate(mondayOfWeek.getDate() + 4);
-    fridayOfWeek.setHours(0, 0, 0, 0); // Reset time to start of day
-    console.log('Friday set to:', fridayOfWeek.toLocaleDateString());
-    
-    // Set pay period start to Monday of current week
+    // A date input's value is a calendar day, "YYYY-MM-DD" — never build it from toISOString(),
+    // which is the UTC day (tomorrow's date every evening in the US).
+    function toYmd(d) {
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
     const payPeriodStartInput = document.getElementById('payPeriodStart');
-    if (payPeriodStartInput) {
-        payPeriodStartInput.valueAsDate = mondayOfWeek;
-    }
-    
-    // Set pay period end to Friday of current week
     const payPeriodEndInput = document.getElementById('payPeriodEnd');
-    if (payPeriodEndInput) {
-        payPeriodEndInput.valueAsDate = fridayOfWeek;
-    }
-    
-    // Set payment date to match pay period end date
     const paymentDateInput = document.getElementById('paymentDate');
-    if (paymentDateInput) {
-        paymentDateInput.valueAsDate = fridayOfWeek;
+
+    // The form opens on THIS week: Monday to Friday, paid Friday. (Until this fix it was pinned
+    // to the week of April 28, 2025.)
+    function applyDefaultDates() {
+        const monday = new Date();
+        monday.setHours(12, 0, 0, 0);
+        monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+        const friday = new Date(monday);
+        friday.setDate(monday.getDate() + 4);
+        if (payPeriodStartInput) payPeriodStartInput.value = toYmd(monday);
+        if (payPeriodEndInput) payPeriodEndInput.value = toYmd(friday);
+        if (paymentDateInput) paymentDateInput.value = toYmd(friday);
     }
+    applyDefaultDates();
     
     // Set default company information
     const companyNameInput = document.getElementById('companyName');
@@ -83,6 +73,20 @@ document.addEventListener('DOMContentLoaded', function() {
         companyAddressInput.value = '5501 Balcones Dr A141\nAustin, TX 78731';
     }
     
+    // Reset asks first, and lands back on this week and the default company rather than on blanks
+    // (a native reset clears everything that was set from script).
+    const paystubFormEl = document.getElementById('paystubForm');
+    if (paystubFormEl) {
+        paystubFormEl.addEventListener('reset', function(e) {
+            if (!window.confirm('Clear this pay stub and start again?')) { e.preventDefault(); return; }
+            setTimeout(function() {
+                applyDefaultDates();
+                if (companyNameInput) companyNameInput.value = 'Click Plumbing and Electrical';
+                if (companyAddressInput) companyAddressInput.value = '5501 Balcones Dr A141\nAustin, TX 78731';
+            }, 0);
+        });
+    }
+
     // Prevent scroll wheel from changing number input values
     const numberInputs = document.querySelectorAll('input[type="number"]');
     numberInputs.forEach(input => {
@@ -102,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update payment date when pay period end date changes
     if (payPeriodEndInput && paymentDateInput) {
         payPeriodEndInput.addEventListener('change', function() {
-            paymentDateInput.valueAsDate = new Date(this.value);
+            paymentDateInput.value = this.value;
         });
     }
     
@@ -174,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const companyAddressInput = document.getElementById('companyAddress');
             const notesInput = document.getElementById('notes');
             
-            if (contractorNameInput) contractorNameInput.value = 'Trace Whites';
+            if (contractorNameInput) contractorNameInput.value = 'Sample Contractor';
             if (paymentAmountInput) paymentAmountInput.value = '1500';
             if (milesDrivenInput) milesDrivenInput.value = '1234';
         
@@ -185,19 +189,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (payPeriodStartInput) {
                 const payPeriodStart = new Date(today);
                 payPeriodStart.setDate(today.getDate() - 14);
-                payPeriodStartInput.value = payPeriodStart.toISOString().split('T')[0];
+                payPeriodStartInput.value = toYmd(payPeriodStart);
             }
             
             // Set pay period end to yesterday
             if (payPeriodEndInput) {
                 const payPeriodEnd = new Date(today);
                 payPeriodEnd.setDate(today.getDate() - 1);
-                payPeriodEndInput.value = payPeriodEnd.toISOString().split('T')[0];
+                payPeriodEndInput.value = toYmd(payPeriodEnd);
             }
             
             // Set payment date to today
             if (paymentDateInput) {
-                paymentDateInput.value = today.toISOString().split('T')[0];
+                paymentDateInput.value = toYmd(today);
             }
             
             // Set company information
@@ -277,10 +281,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const notes = document.getElementById('notes').value;
         const companyName = document.getElementById('companyName').value;
         const companyAddress = document.getElementById('companyAddress').value;
-        
-        // Calculate mileage reimbursement
-        const mileageReimbursement = milesDriven * mileageRate;
-        const totalPayment = paymentAmount + mileageReimbursement;
         
         // Create PDF using jsPDF
         const { jsPDF } = window.jspdf;
@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.text(`${milesDriven.toFixed(1)} miles`, col2, y);
             
             y += 8;
-            doc.text(`IRS Standard Mileage Rate (${new Date().getFullYear()})*`, col1, y);
+            doc.text('IRS Standard Mileage Rate*', col1, y);
             doc.text(`$${mileageRate.toFixed(2)}/mile`, col2, y);
             
             y += 8;
@@ -409,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.text(splitFootnote1, margin, y);
             
             y += splitFootnote1.length * 5;
-            const footnote2 = '**The estimated deduction value is for informational purposes only and does not represent a payment or reimbursement by Click Plumbing and Electrical. Consult a tax professional to determine allowable deductions.';
+            const footnote2 = '**The estimated deduction value is for informational purposes only and does not represent a payment or reimbursement by ' + (companyName || 'the paying company') + '. Consult a tax professional to determine allowable deductions.';
             const splitFootnote2 = doc.splitTextToSize(footnote2, doc.internal.pageSize.width - (margin * 2));
             doc.text(splitFootnote2, margin, y);
         } else {
@@ -445,7 +445,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatDate(dateString) {
         if (!dateString) return '';
         
-        const date = new Date(dateString);
-        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        // "2026-09-18" is a calendar day. new Date('2026-09-18') is UTC midnight, which is the
+        // 17th anywhere in the US — every date on the PDF printed one day early until this fix.
+        const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateString);
+        if (!m) return '';
+        return `${parseInt(m[2], 10)}/${parseInt(m[3], 10)}/${m[1]}`;
     }
 });
