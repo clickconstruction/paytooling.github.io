@@ -1,0 +1,35 @@
+/* The Tooling family's shell over PayTooling's own styles: ink and yellow, a slim header with
+   the mark, plain nav pills. Loaded AFTER dark-mode.css so the header stays ink in both modes;
+   everything else about dark mode is untouched. */
+:root {
+    --primary-color: #161617;
+    --primary-dark: #2a2a2c;
+    --bg-color: #f6f5f1;
+    --header-bg-color: #161617;
+    --family-yellow: #e8c547;
+}
+
+header { padding: 0.75rem 0; margin-bottom: 1.5rem; box-shadow: none; }
+body.dark-mode header { background-color: #0f0f10; }
+.header-title { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
+.family-mark { width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0; }
+.family-title { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+header h1 { margin: 0; font-size: 1.125rem; font-weight: 700; }
+.title-and-toggle { gap: 0.75rem; }
+.title-and-toggle p { margin: 0; font-size: 0.8125rem; color: #bdbbb3; }
+#darkModeToggle { font-size: 1.1rem; color: #ecebe4; }
+
+.main-nav ul { gap: 0.4rem; flex-wrap: wrap; }
+.main-nav .indent-1, .main-nav .indent-2, .main-nav .indent-3 { margin-left: 0; }
+.main-nav a { padding: 0.35rem 0.8rem; border: 1px solid #4a4a4d; border-radius: 999px; background: transparent; box-shadow: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0; color: #ecebe4; }
+.main-nav a::after { display: none; }
+.main-nav a:hover { background: #2a2a2c; }
+.main-nav a.active { background: var(--family-yellow); border-color: var(--family-yellow); color: #161617; font-weight: 600; }
+
+h2 { border-bottom-color: var(--family-yellow); }
+.btn.primary { background-color: #161617; border-color: #161617; color: var(--family-yellow); font-weight: 600; }
+.btn.primary:hover { background-color: #2a2a2c; border-color: #2a2a2c; }
+body.dark-mode .btn.primary { background-color: var(--family-yellow); border-color: var(--family-yellow); color: #161617; }
+input:focus, textarea:focus, select:focus { border-color: #b89b1f; box-shadow: 0 0 0 0.2rem rgba(232, 197, 71, 0.4); outline: none; }
+
+@media (max-width: 640px) { .title-and-toggle p { display: none; } }
